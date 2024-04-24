@@ -1,6 +1,6 @@
 from cnnClassifier.constants import CONFIG_FILE_PATH,PARAMS_FILE_PATH
-from cnnClassifier.utils.common import read_yaml,create_directories
-from cnnClassifier.entity import DataIngestionConfig,PrepareBaseModelConfig,PrepareCallbackConfig,TrainingConfig
+from cnnClassifier.utils.common import read_yaml,create_directories,save_json
+from cnnClassifier.entity import DataIngestionConfig,PrepareBaseModelConfig,PrepareCallbackConfig,TrainingConfig,EvaluationConfig
 import os
 from pathlib import Path
 import tensorflow as tf
@@ -85,3 +85,13 @@ class ConfigurationManager:
 
         return training_config
     
+
+    def get_validation_config(self) -> EvaluationConfig:
+        eval_config = EvaluationConfig(
+            path_of_model=Path("artifacts/training/model.h5"),
+            training_data=Path("artifacts/data_ingestion/Chicken-fecal-images"),
+            all_params=self.params,
+            params_image_size=self.params.IMAGE_SIZE,
+            params_batch_size=self.params.BATCH_SIZE
+        )
+        return eval_config
